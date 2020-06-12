@@ -1,0 +1,6 @@
+include ':home'
+include ':base'
+include ':domain'
+include ':data'
+include ':app'
+rootProject.name = "Movielicious"
