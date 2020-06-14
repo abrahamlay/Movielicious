@@ -6,60 +6,61 @@ import com.google.gson.annotations.SerializedName
  * Created by Abraham Lay on 2020-06-09.
  */
 
-class MovieDto{
+data class MovieDto(
     @SerializedName("page")
-    var page: Int = 0
+    var page: Int = 0,
 
     @SerializedName("total_results")
-    val totalResults: Int = 0
+    val totalResults: Int = 0,
 
     @SerializedName("total_pages")
-    var totalPages: Int = 0
+    var totalPages: Int = 0,
 
     @SerializedName("results")
-    lateinit var results: List<Movie>
+    var results: List<Movie>
+) {
 
-    class Movie {
+    class Movie(
         @SerializedName("vote_count")
-        var voteCount: Int = 0
+        var voteCount: Int = 0,
 
         @SerializedName("id")
-        var id: Int = 0
+        var id: Int = 0,
 
         @SerializedName("video")
-        var video: Boolean = false
+        var video: Boolean = false,
 
         @SerializedName("vote_average")
-        var voteAverage: Double = 0.0
+        var voteAverage: Double = 0.0,
 
         @SerializedName("title")
-        var title: String? = null
+        var title: String? = null,
 
         @SerializedName("popularity")
-        var popularity: Double = 0.0
+        var popularity: Double = 0.0,
 
         @SerializedName("poster_path")
-        var posterPath: String? = null
+        var posterPath: String? = null,
 
         @SerializedName("original_language")
-        var originalLanguage: String? = null
+        var originalLanguage: String? = null,
 
         @SerializedName("original_title")
-        var originalTitle: String? = null
+        var originalTitle: String? = null,
 
         @SerializedName("genre_ids")
-        lateinit var genreIds: List<Int>
+        var genreIds: List<Int>,
 
         @SerializedName("backdrop_path")
-        var backdropPath: String? = null
+        var backdropPath: String? = null,
 
         @SerializedName("adult")
-        var adult: Boolean = false
+        var adult: Boolean = false,
 
         @SerializedName("overview")
-        var overview: String? = null
+        var overview: String? = null,
 
         @SerializedName("release_date")
         var releaseDate: String? = null
-    }
+    )
 }

@@ -23,8 +23,7 @@ interface MovieAPI {
     @GET("3/movie/{movieId}/reviews")
     fun getReviews(
         @Path("movieId") movieId: Int,
-        @Query("api_key") apiKey: String,
-        @QueryMap map: HashMap<String, Any>
+        @Query("api_key") apiKey: String
     ): Flowable<ReviewDto>
 
     @GET("3/movie/{movieId}/videos")
@@ -38,4 +37,13 @@ interface MovieAPI {
         @Path("movieId") movieId: Int,
         @Query("api_key") apiKey: String
     ): Flowable<DetailMovieDto>
+
+    @GET("3/movie/popular")
+    fun getPopularMovies(@Query("api_key") apiKey: String): Flowable<MovieDto>
+
+    @GET("3/movie/top_rated")
+    fun getTopRatedMovies(@Query("api_key") apiKey: String): Flowable<MovieDto>
+
+    @GET("3/movie/now_playing")
+    fun getNowPlayingMovies(@Query("api_key") apiKey: String): Flowable<MovieDto>
 }
