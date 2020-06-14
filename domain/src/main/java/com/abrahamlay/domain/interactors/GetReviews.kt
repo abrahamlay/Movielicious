@@ -14,12 +14,8 @@ class GetReviews constructor(
     postExecutionThread: PostExecutionThread
 ) : FlowableUseCase<List<ReviewModel>, GetReviews.Params>(postExecutionThread) {
     override fun build(params: Params): Flowable<List<ReviewModel>> {
-        return repository.getReviews(params.apiKey, params.movieId, params.map)
+        return repository.getReviews(params.apiKey, params.movieId)
     }
 
-    data class Params(val apiKey: String, val movieId: Int, val map: HashMap<String, Any>) {
-        companion object {
-            const val PAGE_KEY = "page"
-        }
-    }
+    data class Params(val apiKey: String, val movieId: Int)
 }

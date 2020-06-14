@@ -1,6 +1,9 @@
 package com.abrahamlay.domain.repositories
 
-import com.abrahamlay.domain.entities.*
+import com.abrahamlay.domain.entities.DetailMovieModel
+import com.abrahamlay.domain.entities.MovieModel
+import com.abrahamlay.domain.entities.ReviewModel
+import com.abrahamlay.domain.entities.VideoModel
 import io.reactivex.Flowable
 
 /**
@@ -8,12 +11,16 @@ import io.reactivex.Flowable
  */
 
 interface MovieRepository {
-    fun getGenres(apiKey: String): Flowable<List<GenreModel>>
-    fun getDiscoverMovies(apiKey: String, map: HashMap<String, Any>): Flowable<List<MovieModel>>
+    fun getPopularMovies(apiKey: String): Flowable<List<MovieModel>?>
+    fun getTopRatedMovies(apiKey: String): Flowable<List<MovieModel>?>
+    fun getNowPlayingMovies(apiKey: String): Flowable<List<MovieModel>?>
+    fun getFavoriteMovies(): Flowable<List<MovieModel>?>
+    fun getFavoriteMovie(movieId: Int): Flowable<MovieModel?>
+    fun insertFavoriteMovie(movieModel: MovieModel): Long
+    fun deleteFavoriteMovie(movieModel: MovieModel): Int
     fun getReviews(
         apiKey: String,
-        movieId: Int,
-        map: HashMap<String, Any>
+        movieId: Int
     ): Flowable<List<ReviewModel>>
 
     fun getVideo(
@@ -25,5 +32,6 @@ interface MovieRepository {
         apiKey: String,
         movieId: Int
     ): Flowable<DetailMovieModel>
+
 
 }
