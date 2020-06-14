@@ -11,9 +11,14 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
     single<PostExecutionThread> { return@single AndroidUIThread() }
-    factory { GetGenresInteractor(get(), get()) }
-    factory { GetDiscoverMoviesByGenre(get(), get()) }
     factory { GetReviews(get(), get()) }
     factory { GetDetailMovie(get(), get()) }
     factory { GetVideos(get(), get()) }
+    factory { GetNowPlayingMovies(get(), get()) }
+    factory { GetTopRatedMovies(get(), get()) }
+    factory { GetPopularMovies(get(), get()) }
+    factory { GetFavoriteMovie(get(), get()) }
+    factory { GetFavoriteMovies(get(), get()) }
+    factory { InsertFavoriteMovie(get(), get()) }
+    factory { DeleteFavoriteMovie(get(), get()) }
 }
