@@ -26,7 +26,10 @@ class DetailMovieMapperTest : BaseDataTestClass() {
         assertThat<Int>(properties?.voteCount, Is.`is`<Int>(dummyDetailMovieDto.voteCount))
         assertThat<Int>(properties?.id, Is.`is`<Int>(dummyDetailMovieDto.id))
         assertThat<Boolean>(properties?.video, Is.`is`<Boolean>(dummyDetailMovieDto.video))
-        assertThat<Double>(properties?.voteAverage, Is.`is`<Double>(dummyDetailMovieDto.voteAverage))
+        assertThat<Double>(
+            properties?.voteAverage,
+            Is.`is`<Double>(dummyDetailMovieDto.voteAverage)
+        )
         assertThat<String>(properties?.title, Is.`is`<String>(dummyDetailMovieDto.title))
         assertThat<Double>(properties?.popularity, Is.`is`<Double>(dummyDetailMovieDto.popularity))
         assertThat<String>(properties?.posterPath, Is.`is`<String>(dummyDetailMovieDto.posterPath))
@@ -39,10 +42,16 @@ class DetailMovieMapperTest : BaseDataTestClass() {
             Is.`is`<String>(dummyDetailMovieDto.originalTitle)
         )
         assertThat<Int>(properties?.genres?.size, Is.`is`<Int>(dummyDetailMovieDto.genres?.size))
-        assertThat<String>(properties?.backdropPath, Is.`is`<String>(dummyDetailMovieDto.backdropPath))
+        assertThat<String>(
+            properties?.backdropPath,
+            Is.`is`<String>(dummyDetailMovieDto.backdropPath)
+        )
         assertThat<Boolean>(properties?.adult, Is.`is`<Boolean>(dummyDetailMovieDto.adult))
         assertThat<String>(properties?.overview, Is.`is`<String>(dummyDetailMovieDto.overview))
-        assertThat<String>(properties?.releaseDate, Is.`is`<String>(dummyDetailMovieDto.releaseDate))
+        assertThat<String>(
+            properties?.releaseDate,
+            Is.`is`<String>(dummyDetailMovieDto.releaseDate)
+        )
 
     }
 

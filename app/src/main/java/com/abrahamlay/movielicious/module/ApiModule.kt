@@ -1,7 +1,7 @@
 package com.abrahamlay.movielicious.module
 
-import com.abrahamlay.movielicious.WebApiProvider
 import com.abrahamlay.data.apis.MovieAPI
+import com.abrahamlay.movielicious.WebApiProvider
 import org.koin.dsl.module
 
 /**

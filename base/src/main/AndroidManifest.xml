@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.abrahamlay.base">
+<manifest package="com.abrahamlay.base">
 
     /
 </manifest>

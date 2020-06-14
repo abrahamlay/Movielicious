@@ -3,7 +3,6 @@ package com.abrahamlay.detail.favorite
 import com.abrahamlay.BaseHomeTestClass
 import com.abrahamlay.MockitoHelper
 import com.abrahamlay.domain.interactors.GetFavoriteMovie
-import com.abrahamlay.domain.interactors.InsertFavoriteMovie
 import com.abrahamlay.observeForTesting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before

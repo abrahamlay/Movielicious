@@ -135,7 +135,7 @@ class DetailFragment : BaseFragment<BaseViewModel>() {
     private fun setDetail(it: ResultState<DetailMovieModel>?) {
         when (it) {
             is ResultState.Success -> {
-               setDetailData(it.data)
+                setDetailData(it.data)
             }
             is ResultState.Error -> {
                 Toast.makeText(context, it.throwable.localizedMessage, Toast.LENGTH_SHORT).show()

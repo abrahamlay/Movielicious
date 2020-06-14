@@ -2,12 +2,9 @@ package com.abrahamlay.detail
 
 import com.abrahamlay.BaseHomeTestClass
 import com.abrahamlay.MockitoHelper
-import com.abrahamlay.detail.reviews.ReviewViewModel
 import com.abrahamlay.domain.interactors.GetDetailMovie
-import com.abrahamlay.domain.interactors.GetReviews
 import com.abrahamlay.observeForTesting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

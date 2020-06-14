@@ -10,11 +10,9 @@ import com.abrahamlay.base.presentation.BaseActivity
 import com.abrahamlay.base.presentation.BaseFragment
 import com.abrahamlay.base.subscriber.BaseViewModel
 import com.abrahamlay.home.databinding.FragmentMainBinding
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_detail.toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.abs
 
 
 /**
@@ -48,7 +46,7 @@ class MainFragment : BaseFragment<BaseViewModel>(), SwipeRefreshLayout.OnRefresh
         super.onInitObservers()
         initListener()
         fetchData()
-        Log.d("MainFragment","onInitObserver")
+        Log.d("MainFragment", "onInitObserver")
     }
 
     private fun initListener() {

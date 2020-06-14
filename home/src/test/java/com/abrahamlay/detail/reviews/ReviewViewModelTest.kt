@@ -1,17 +1,12 @@
 package com.abrahamlay.detail.reviews
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.abrahamlay.BaseHomeTestClass
 import com.abrahamlay.MockitoHelper
-import com.abrahamlay.detail.favorite.InsertFavoriteMovieViewModel
-import com.abrahamlay.detail.favorite.TestCoroutineRule
 import com.abrahamlay.domain.interactors.GetReviews
 import com.abrahamlay.observeForTesting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito
 import org.mockito.Mock

@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner
  * Created by Abraham Lay on 14/06/20.
  */
 @RunWith(MockitoJUnitRunner::class)
-class DeleteFavoriteMovieDomainTest: BaseDomainTestClass() {
+class DeleteFavoriteMovieDomainTest : BaseDomainTestClass() {
 
     // SUT
     private lateinit var interactor: DeleteFavoriteMovie

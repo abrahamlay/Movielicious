@@ -7,6 +7,6 @@ import com.abrahamlay.domain.entities.MovieModel
  * Created by Abraham Lay on 2020-06-09.
  */
 
-interface ViewContract{
+interface ViewContract {
     fun onMovieLoaded(list: ResultState<List<MovieModel>?>)
 }

@@ -9,8 +9,6 @@ import com.abrahamlay.base.subscriber.DefaultSubscriber
 import com.abrahamlay.base.subscriber.ResultState
 import com.abrahamlay.domain.entities.MovieModel
 import com.abrahamlay.domain.interactors.GetNowPlayingMovies
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 /**
  * Created by Abraham Lay on 2019-12-28.
