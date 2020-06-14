@@ -40,7 +40,10 @@ dependencies {
 //    implementation support.roomCommon
     implementation support.roomRxJava
 
-    testImplementation test.jUnit
     androidTestImplementation test.testRunner
     androidTestImplementation test.espresso
+    testImplementation test.jUnit
+    testImplementation test.mockito
+    testImplementation test.mockitoInline
+    testImplementation test.assertj
 }

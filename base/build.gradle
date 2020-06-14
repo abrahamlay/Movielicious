@@ -35,6 +35,7 @@ dependencies {
     //navigation
     implementation support.navigationUi
     implementation support.navigationFragment
+    implementation support.core
 
     testImplementation test.jUnit
     androidTestImplementation test.testRunner

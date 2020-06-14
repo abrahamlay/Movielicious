@@ -5,6 +5,10 @@ package com.abrahamlay.base.constant
  */
 class Constants {
     companion object {
+        const val POPULAR: Int = 0
+        const val TOP_RATED: Int = 1
+        const val NOW_PLAYING: Int = 2
+        const val FAVORITE: Int = 3
         const val API_KEY = "e1364e3bc8f9d46c4a09586973081f96"
 
         const val MOVIE_THUMBNAIL_BASE_URL_EXTRA_SMALL = "https://image.tmdb.org/t/p/w92/%s"

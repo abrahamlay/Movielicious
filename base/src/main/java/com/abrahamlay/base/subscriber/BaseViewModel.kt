@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 /**
  * Created by Abraham Lay on 2019-10-06.
  */
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel() : ViewModel() {
     fun onComplete() {
         // No-op by default
     }
