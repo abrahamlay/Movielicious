@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:forceDarkAllowed="false"
+    android:theme="@style/AppTheme.NoActionBar">
 
     <Button
         android:id="@+id/btnRetry"
@@ -30,6 +32,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

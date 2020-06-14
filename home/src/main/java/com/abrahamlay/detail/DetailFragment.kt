@@ -1,13 +1,14 @@
 package com.abrahamlay.detail
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +19,15 @@ import com.abrahamlay.base.subscriber.BaseViewModel
 import com.abrahamlay.base.subscriber.ResultState
 import com.abrahamlay.base.util.DateFormater
 import com.abrahamlay.base.util.GlideHelper
+import com.abrahamlay.detail.favorite.DeleteFavoriteMovieViewModel
+import com.abrahamlay.detail.favorite.GetFavoriteMovieViewModel
+import com.abrahamlay.detail.favorite.InsertFavoriteMovieViewModel
 import com.abrahamlay.detail.reviews.ReviewAdapter
 import com.abrahamlay.detail.reviews.ReviewViewModel
 import com.abrahamlay.detail.video.VideoViewModel
+import com.abrahamlay.domain.entities.DetailMovieModel
 import com.abrahamlay.domain.entities.MovieModel
+import com.abrahamlay.domain.entities.ReviewModel
 import com.abrahamlay.domain.entities.VideoModel
 import com.abrahamlay.home.R
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -36,12 +42,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class DetailFragment : BaseFragment<BaseViewModel>() {
 
+    private var menu: Menu? = null
+    private var isFavorite: Boolean = false
     private lateinit var adapter: ReviewAdapter
     private var detailMovie: MovieModel? = null
 
     override val viewModel by viewModel<ReviewViewModel>()
 
     private val viewModelVideo by viewModel<VideoViewModel>()
+    private val favoriteMovieViewModel by viewModel<GetFavoriteMovieViewModel>()
+    private val insertFavoriteMovieViewModel by viewModel<InsertFavoriteMovieViewModel>()
+    private val deleteFavoriteMovieViewModel by viewModel<DeleteFavoriteMovieViewModel>()
+    private val detailViewModel by viewModel<DetailViewModel>()
 
     companion object {
         const val PARAM_DETAIL_MOVIE = "detailMovie"
@@ -75,48 +87,138 @@ class DetailFragment : BaseFragment<BaseViewModel>() {
         super.onInitViews()
         initToolbar()
         if (detailMovie != null) {
-            detailOverview.text = detailMovie?.overview
-            detailRating.text = detailMovie?.popularity.toString()
-            val releaseDate = DateFormater.changeDateFormat(
-                detailMovie?.releaseDate
-            )
-            detailDateRelease.text = releaseDate
-            val url =
-                String.format(Constants.MOVIE_THUMBNAIL_BASE_URL_MEDIUM, detailMovie?.backdropPath)
-            GlideHelper.showImage(url, ivMovie, context!!)
-
-            detailMovie?.id?.let {
-                viewModelVideo.refreshVideo(it)
-            }
+            initDetail()
         }
-        viewModelVideo.videoData.observe(this, Observer {
-            initVideo(it)
-        })
+    }
+
+    private fun initDetail() {
+        detailOverview.text = detailMovie?.overview
+        detailRating.text = detailMovie?.popularity.toString()
+        val releaseDate = DateFormater.changeDateFormat(
+            detailMovie?.releaseDate
+        )
+        detailDateRelease.text = releaseDate
+        val url =
+            String.format(
+                Constants.MOVIE_THUMBNAIL_BASE_URL_EXTRA_LARGE,
+                detailMovie?.backdropPath
+            )
+        GlideHelper.showBackDrop(url, ivMovie, context!!)
+        getDetailData()
     }
 
     override fun onInitObservers() {
         super.onInitObservers()
-        getReviews()
-        viewModel.errorLiveData.observe(this, Observer {
-            showError(it)
-        })
         btnRetry.setOnClickListener {
-            getReviews()
+            getDetailData()
+        }
+        viewModelVideo.videoData.observe(this, Observer {
+            initVideo(it)
+        })
+        viewModel.reviewData.observe(this, Observer {
+            onResultLoaded(it)
+        })
+        favoriteMovieViewModel.favoriteMovieData.observe(this, Observer {
+            checkingMovieFavoriteStatus(it)
+        })
+        insertFavoriteMovieViewModel.favoriteMovieData.observe(this, Observer {
+            afterInsertFavoriteMovie(it)
+        })
+        deleteFavoriteMovieViewModel.favoriteMovieData.observe(this, Observer {
+            afterDeleteFavoriteMovie(it)
+        })
+        detailViewModel.detailData.observe(this, Observer {
+            setDetail(it)
+        })
+    }
+
+    private fun setDetail(it: ResultState<DetailMovieModel>?) {
+        when (it) {
+            is ResultState.Success -> {
+               setDetailData(it.data)
+            }
+            is ResultState.Error -> {
+                Toast.makeText(context, it.throwable.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun initAdapter() {
+    private fun setDetailData(data: DetailMovieModel?) {
+        detailOverview.text = data?.overview
+        detailRating.text = data?.popularity.toString()
+        val releaseDate = DateFormater.changeDateFormat(
+            data?.releaseDate
+        )
+        detailDateRelease.text = releaseDate
+        val url =
+            String.format(
+                Constants.MOVIE_THUMBNAIL_BASE_URL_EXTRA_LARGE,
+                data?.backdropPath
+            )
+        GlideHelper.showBackDrop(url, ivMovie, context!!)
+    }
+
+    private fun afterDeleteFavoriteMovie(it: ResultState<Int>?) {
+        when (it) {
+            is ResultState.Success -> {
+                isFavorite = !isFavorite
+                Toast.makeText(context, getString(R.string.favorite_deleted), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            is ResultState.Error -> {
+                Toast.makeText(context, it.throwable.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+        setFavoriteIcon()
+    }
+
+    private fun afterInsertFavoriteMovie(it: ResultState<Long>?) {
+        when (it) {
+            is ResultState.Success -> {
+                isFavorite = !isFavorite
+                Toast.makeText(context, getString(R.string.favorite_added), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            is ResultState.Error -> {
+                Toast.makeText(context, it.throwable.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+        setFavoriteIcon()
+    }
+
+    private fun checkingMovieFavoriteStatus(it: ResultState<MovieModel?>?) {
+        it?.let {
+            when (it) {
+                is ResultState.Success -> {
+                    isFavorite = true
+                }
+            }
+
+            setFavoriteIcon()
+        }
+    }
+
+    private fun setFavoriteIcon() {
+        menu?.getItem(0)?.icon = getFavoriteIcon()
+    }
+
+
+    private fun onResultLoaded(resultState: ResultState<List<ReviewModel>>?) {
+        hideLoading()
+        when (resultState) {
+            is ResultState.Success -> {
+                initAdapter(resultState)
+            }
+            is ResultState.Error -> {
+                showError(resultState.throwable)
+            }
+        }
+
+    }
+
+    private fun initAdapter(resultState: ResultState.Success<List<ReviewModel>>) {
         adapter = ReviewAdapter()
-
-        viewModel.productLiveData.observe(this, Observer { pagedList ->
-            hideLoading()
-            adapter.submitList(pagedList)
-        })
-
-        viewModel.networkState.observe(this, Observer { networkState ->
-            adapter.setNetworkState(networkState)
-        })
-
+        adapter.data = resultState.data
         rvReviewsList.adapter = adapter
         rvReviewsList.layoutManager = getLayoutManager()
     }
@@ -137,13 +239,12 @@ class DetailFragment : BaseFragment<BaseViewModel>() {
         if (state is ResultState.Success) {
             initWebView(state.data[0].key)
         }
-
     }
 
     private fun initWebView(key: String?) {
         //build your own src link with your video ID
         val videoStr =
-            "<iframe style=\"margin: auto;\" width=\"370\" height=\"240\" src=\"https://www.youtube.com/embed/$key\" autoplay=\"1\" allowfullscreen/>"
+            "<html><head><style>body{margin:0} iframe{margin:0;width:100%}</style></head><body><iframe style=\"margin: 0;\" width=\"100%\" height=\"240\" src=\"https://www.youtube.com/embed/$key\" autoplay=\"1\" allowfullscreen/></body></html>"
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -168,13 +269,43 @@ class DetailFragment : BaseFragment<BaseViewModel>() {
         errorView.visibility = View.GONE
     }
 
-    fun getReviews() {
+    private fun getDetailData() {
         detailMovie?.id?.let {
             hideError()
             showLoading()
-            viewModel.refreshReview(it)
-            initAdapter()
+            viewModel.refreshReviews(it)
+            viewModelVideo.refreshVideo(it)
+            favoriteMovieViewModel.getFavoriteMovie(it)
+            detailViewModel.refreshDetail(it)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu
+        activity?.menuInflater?.inflate(R.menu.detail_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        setFavoriteMovie()
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setFavoriteMovie() {
+        detailMovie?.let {
+            if (!isFavorite) {
+                insertFavoriteMovieViewModel.insertMovie(it)
+            } else {
+                deleteFavoriteMovieViewModel.deleteMovie(it)
+            }
+        }
+    }
+
+    private fun getFavoriteIcon(): Drawable? {
+        return if (isFavorite) ContextCompat.getDrawable(
+            context!!,
+            R.drawable.ic_favorite_filled
+        ) else ContextCompat.getDrawable(context!!, R.drawable.ic_favorite_unfilled)
     }
 
     private fun showLoading() {

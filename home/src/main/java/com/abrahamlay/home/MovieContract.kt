@@ -1,5 +1,6 @@
 package com.abrahamlay.home
 
+import com.abrahamlay.base.subscriber.ResultState
 import com.abrahamlay.domain.entities.MovieModel
 
 /**
@@ -7,5 +8,5 @@ import com.abrahamlay.domain.entities.MovieModel
  */
 
 interface ViewContract{
-    fun onMovieLoaded(list: List<MovieModel>)
+    fun onMovieLoaded(list: ResultState<List<MovieModel>?>)
 }
